@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <string.h>
+
+// Check if substring is palindrome
+int isPalindrome(char str[], int start, int end) {
+    while (start < end) {
+        if (str[start] != str[end])
+            return 0;
+        start++;
+        end--;
+    }
+    return 1;
+}
+
+// Find palindromes (length >= 2) and longest palindrome
+void findPalindromes(char str[]) {
+    int n = strlen(str);
+    int maxLength = 0, startIndex = 0;
+
+    printf("Palindromic substrings (length >= 2):\n");
+
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {  // start from i+1 to exclude single letters
+            if (isPalindrome(str, i, j)) {
+                // Print palindrome
+                for (int k = i; k <= j; k++)
+                    printf("%c", str[k]);
+                printf("\n");
+
+                // Track longest palindrome
+                if (j - i + 1 > maxLength) {
+                    maxLength = j - i + 1;
+                    startIndex = i;
+                }
+            }
+        }
+    }
+
+    if (maxLength > 0) {
+        printf("\nLongest Palindrome: ");
+        for (int i = startIndex; i < startIndex + maxLength; i++)
+            printf("%c", str[i]);
+    } else {
+        printf("\nNo palindrome of length >= 2 found");
+    }
+
+    printf("\n");
+}
+
+// Naive pattern search
+void patternSearch(char text[], char pattern[]) {
+    int n = strlen(text);
+    int m = strlen(pattern);
+    int found = 0;
+
+    printf("\nPattern found at positions: ");
+
+    for (int i = 0; i <= n - m; i++) {
+        int j;
+        for (j = 0; j < m; j++) {
+            if (text[i + j] != pattern[j])
+                break;
+        }
+        if (j == m) {
+            printf("%d ", i);
+            found = 1;
+        }
+    }
+
+    if (!found)
+        printf("None");
+
+    printf("\n");
+}
+
+// Main
+int main() {
+    char str[100], pattern[50];
+
+    printf("Enter a string: ");
+    scanf("%s", str);
+
+    findPalindromes(str);
+
+    printf("\nEnter pattern to search: ");
+    scanf("%s", pattern);
+
+    patternSearch(str, pattern);
+
+    return 0;
+}
