@@ -1,0 +1,30 @@
+import cv2
+import numpy as np
+
+# Load the image
+image = cv2.imread('input.jpg')
+
+# Check if image is loaded
+if image is None:
+    print("Error: Image not found!")
+    exit()
+
+# Display original image
+cv2.imshow("Original Image", image)
+
+# Convert to grayscale
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+cv2.imshow("Grayscale Image", gray)
+
+# Modify a region (Top-left 100x100 pixels → Blue color)
+modified = image.copy()
+modified[0:100, 0:100] = [255, 0, 0]  # BGR format (Blue)
+
+cv2.imshow("Modified Image", modified)
+
+# Save the modified image
+cv2.imwrite('output.jpg', modified)
+
+# Wait for key press and close windows
+cv2.waitKey(0)
+cv2.destroyAllWindows()
