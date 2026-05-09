@@ -1,30 +1,124 @@
+# ============================================
+# IMAGE BASICS, MANIPULATION & FILTERING
+# ============================================
+
 import cv2
 import numpy as np
 
-# Load the image
-image = cv2.imread('input.jpg')
+# --------------------------------------------
+# 1. LOAD IMAGE
+# --------------------------------------------
 
-# Check if image is loaded
+# Read image
+image = cv2.imread("sample.jpg")
+
+# Check if image loaded
 if image is None:
-    print("Error: Image not found!")
+    print("Image not found!")
     exit()
 
 # Display original image
 cv2.imshow("Original Image", image)
 
-# Convert to grayscale
+# Save copy
+cv2.imwrite("copy_image.jpg", image)
+
+# --------------------------------------------
+# 2. IMAGE INFORMATION
+# --------------------------------------------
+
+print("Image Shape:", image.shape)
+print("Height:", image.shape[0])
+print("Width:", image.shape[1])
+print("Channels:", image.shape[2])
+
+# --------------------------------------------
+# 3. PIXEL MANIPULATION
+# --------------------------------------------
+
+# Change a rectangular region to blue color
+# Format in OpenCV = BGR
+image[50:150, 50:200] = [255, 0, 0]
+
+cv2.imshow("Pixel Manipulation", image)
+
+# --------------------------------------------
+# 4. CONVERT RGB/BGR TO GRAYSCALE
+# --------------------------------------------
+
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
 cv2.imshow("Grayscale Image", gray)
 
-# Modify a region (Top-left 100x100 pixels → Blue color)
-modified = image.copy()
-modified[0:100, 0:100] = [255, 0, 0]  # BGR format (Blue)
+# Save grayscale image
+cv2.imwrite("gray_image.jpg", gray)
 
-cv2.imshow("Modified Image", modified)
+# --------------------------------------------
+# 5. CONVERT TO HSV COLOR SPACE
+# --------------------------------------------
 
-# Save the modified image
-cv2.imwrite('output.jpg', modified)
+hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
-# Wait for key press and close windows
+cv2.imshow("HSV Image", hsv)
+
+# --------------------------------------------
+# 6. CONVERT TO LAB COLOR SPACE
+# --------------------------------------------
+
+lab = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
+
+cv2.imshow("LAB Image", lab)
+
+# --------------------------------------------
+# 7. IMAGE FILTERING & ENHANCEMENT
+# --------------------------------------------
+
+# Gaussian Blur
+blur = cv2.GaussianBlur(image, (7, 7), 0)
+
+cv2.imshow("Gaussian Blur", blur)
+
+# Median Blur
+median = cv2.medianBlur(image, 5)
+
+cv2.imshow("Median Blur", median)
+
+# Bilateral Filter
+bilateral = cv2.bilateralFilter(image, 9, 75, 75)
+
+cv2.imshow("Bilateral Filter", bilateral)
+
+# --------------------------------------------
+# 8. IMAGE SHARPENING
+# --------------------------------------------
+
+kernel = np.array([[0, -1, 0],
+                   [-1, 5,-1],
+                   [0, -1, 0]])
+
+sharpened = cv2.filter2D(image, -1, kernel)
+
+cv2.imshow("Sharpened Image", sharpened)
+
+# --------------------------------------------
+# 9. EDGE DETECTION
+# --------------------------------------------
+
+edges = cv2.Canny(gray, 100, 200)
+
+cv2.imshow("Edge Detection", edges)
+
+# --------------------------------------------
+# 10. SAVE FINAL OUTPUTS
+# --------------------------------------------
+
+cv2.imwrite("blurred.jpg", blur)
+cv2.imwrite("sharpened.jpg", sharpened)
+cv2.imwrite("edges.jpg", edges)
+
+# --------------------------------------------
+# CLOSE WINDOWS
+# --------------------------------------------
+
 cv2.waitKey(0)
 cv2.destroyAllWindows()
