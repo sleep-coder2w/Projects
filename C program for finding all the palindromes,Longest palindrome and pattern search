@@ -1,51 +1,86 @@
-#include <stdio.h>
-#include <string.h>
+#include <stdio.h>      // Header file for input and output
+#include <string.h>     // Header file for string functions
 
-// Function to check palindrome
+// Function to check whether substring is palindrome
 int isPalindrome(char str[], int start, int end) {
+
+    // Repeat until both indexes meet
     while (start < end) {
+
+        // If characters are not equal
         if (str[start] != str[end])
+
+            // Not a palindrome
             return 0;
+
+        // Move start forward
         start++;
+
+        // Move end backward
         end--;
     }
+
+    // Palindrome found
     return 1;
 }
 
 // Function to find all palindromes
 void findPalindromes(char str[]) {
+
+    // Get length of string
     int n = strlen(str);
+
+    // Variables for longest palindrome
     int maxLength = 0, startIndex = 0;
+
+    // Variable to check whether palindrome exists
     int found = 0;
 
+    // Print heading
     printf("\nPalindromic substrings (length >= 2):\n");
 
+    // Outer loop for starting index
     for (int i = 0; i < n; i++) {
+
+        // Inner loop for ending index
         for (int j = i + 1; j < n; j++) {
 
+            // Check if substring is palindrome
             if (isPalindrome(str, i, j)) {
 
+                // Mark palindrome found
                 found = 1;
 
-                // Print palindrome
+                // Print palindrome characters
                 for (int k = i; k <= j; k++) {
+
+                    // Print each character
                     printf("%c", str[k]);
                 }
 
+                // Move to next line
                 printf("\n");
 
-                // Check longest palindrome
+                // Check if current palindrome is longest
                 if ((j - i + 1) > maxLength) {
+
+                    // Store new maximum length
                     maxLength = j - i + 1;
+
+                    // Store starting position
                     startIndex = i;
                 }
             }
         }
     }
 
+    // If palindrome found
     if (found) {
+
+        // Print heading
         printf("\nLongest Palindrome: ");
 
+        // Print longest palindrome
         for (int i = startIndex;
              i < startIndex + maxLength;
              i++) {
@@ -53,65 +88,95 @@ void findPalindromes(char str[]) {
             printf("%c", str[i]);
         }
 
+        // Move to next line
         printf("\n");
     }
+
+    // If no palindrome found
     else {
+
         printf("No palindrome found.\n");
     }
 }
 
-// Function for pattern search
+// Function for pattern searching
 void patternSearch(char text[], char pattern[]) {
 
+    // Length of text
     int n = strlen(text);
+
+    // Length of pattern
     int m = strlen(pattern);
+
+    // Variable to check match found
     int found = 0;
 
+    // Print heading
     printf("\nPattern found at positions: ");
 
+    // Traverse text
     for (int i = 0; i <= n - m; i++) {
 
         int j;
 
+        // Compare pattern characters
         for (j = 0; j < m; j++) {
 
+            // Stop if mismatch occurs
             if (text[i + j] != pattern[j]) {
+
                 break;
             }
         }
 
+        // If full pattern matched
         if (j == m) {
+
+            // Print starting index
             printf("%d ", i);
+
+            // Mark pattern found
             found = 1;
         }
     }
 
+    // If no pattern found
     if (!found) {
+
         printf("None");
     }
 
+    // Move to next line
     printf("\n");
 }
 
-// Main Function
+// Main function
 int main() {
 
+    // String array for input text
     char str[1000];
+
+    // String array for pattern
     char pattern[100];
 
-    // Input string with spaces
+    // Ask user to enter string
     printf("Enter a string:\n");
+
+    // Read full string including spaces
     scanf(" %[^\n]", str);
 
-    // Find palindromes
+    // Find all palindromes
     findPalindromes(str);
 
-    // Pattern input with spaces
+    // Ask user for pattern
     printf("\nEnter pattern to search:\n");
+
+    // Read pattern including spaces
     scanf(" %[^\n]", pattern);
 
-    // Pattern search
+    // Perform pattern search
     patternSearch(str, pattern);
 
+    // End program
     return 0;
 }
